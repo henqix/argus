@@ -17,5 +17,6 @@ select v.QID, d.OWNER, d.NAME, v.WAITING, v.READY, v.EXPIRED
 from v$aq v,
      dba_queues d
 where d.qid = v.qid
+order by 2,3
 /
 
