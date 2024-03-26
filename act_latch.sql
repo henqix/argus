@@ -5,7 +5,7 @@ rem * Original          : IXORA
 rem * Last Update       : 27-sep-2001 
 rem * Update            : Adapted for Argus Toolbox
 rem * Description       : Report actual latches
-rem * Usage             : start md_actlat.sql
+rem * Usage             : start act_latch.sql
 rem ********************************************************************
 
 set lines 128
