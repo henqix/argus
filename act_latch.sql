@@ -1,13 +1,15 @@
--------------------------------------------------------------------------------
---
--- Script:	latch_where_now.sql
--- Purpose:	shows a snapshot of latch sleeps by code locations
--- For:		8.0 and higher
---
--- Copyright:	(c) Ixora Pty Ltd
--- Author:	Steve Adams
---
--------------------------------------------------------------------------------
+rem ********************************************************************
+rem * Filename          : act_latch.sql - Version 1.0
+rem * Author            : Henk Uiterwijk
+rem * Original          : IXORA
+rem * Last Update       : 27-sep-2001 
+rem * Update            : Adapted for Argus Toolbox
+rem * Description       : Report actual latches
+rem * Usage             : start act_latch.sql
+rem ********************************************************************
+
+set lines 128
+set pages 60
 
 set recsep off
 column name format a30 heading "LATCH TYPE"
