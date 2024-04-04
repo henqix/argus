@@ -45,4 +45,3 @@ order by
   1, s.address, p.piece
 /
 
-start rf_clea
