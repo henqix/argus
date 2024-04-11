@@ -14,7 +14,7 @@ set pages 60
 column oracle      format a11
 column os          format a40
 column pid         format a08
-column process     format a10
+column process     format a15
 column oracle_id   format a09
 column typ         format a03
 column program     format a20
@@ -63,28 +63,12 @@ SELECT
      , SUBSTR(P.SPID,1,8) PID                                                   
      , S.PROCESS
      , SUBSTR                                                                   
-       (S.SID||','||S.SERIAL#||                                     
+       (S.SID||':'||S.SERIAL#||                                     
         DECODE                                                                  
         (S.STATUS                                                               
         ,'KILLED','*'                                                           
         ,'')                                                                    
        ,1,9) ORACLE_ID                                                          
-     , SUBSTR                                                                   
-       (DECODE                                                                  
-        (S.TYPE                                                                 
-        ,'BACKGROUND','BCK'                                                     
-        ,DECODE                                                                 
-         (DP.PADDR                                                              
-         ,NULL,DECODE                                                           
-               (SS.PADDR                                                        
-               ,NULL,'DED'                                                      
-               ,'SHR')                                                          
-         ,'DSP'                                                                 
-         )                                                                      
-        )                                                                       
-       ,1,3                                                                     
-       )                                                                        
-       TYP                                                                      
      , UPPER                                                                    
        (SUBSTR                                                                  
         (decode                                                                 
@@ -222,10 +206,10 @@ SELECT
        ,1,7                                                                     
        )                                                                        
        COMMAND                                                                  
-     , substr(ltrim(to_char(round(pga.value/1024/1024,1),'9990D0')),1,4)         
-       pga                                                                      
-     , substr(ltrim(to_char(round(uga.value/1024/1024,1),'99990D0')),1,4)         
-       uga
+--     , substr(ltrim(to_char(round(pga.value/1024/1024,1),'9990D0')),1,4)         
+--       pga                                                                      
+--     , substr(ltrim(to_char(round(uga.value/1024/1024,1),'99990D0')),1,4)         
+--       uga
  FROM  SYS.V_$PROCESS       P                                                   
  ,     SYS.V_$SESSTAT       PGA                                                 
  ,     SYS.V_$SESSTAT       UGA                                                 
@@ -243,5 +227,6 @@ SELECT
  AND   CGA.STATISTIC#       = 12                                                
  AND   S.SID                = UGA.SID                                           
  AND   S.SID                = CGA.SID
- AND   S.SID                = PGA.SID                                           
+ AND   S.SID                = PGA.SID
+ AND   S.TYPE               <> 'BACKGROUND' 
  ORDER BY S.SID;

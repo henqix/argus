@@ -1,15 +1,26 @@
 rem ********************************************************************
-rem * Filename          : db_sesinu.sql - Version 2.1
+rem * Filename          : db_sesinf.sql - Version 2.1
 rem * Author            : Henk Uiterwijk
 rem * Original          : 12-apr-97
 rem * Last Update       : 12-sep-02
 rem * Update            : Use view DBA_USERS instaed of USER$
-rem * Description       : Monitor database session info (Username)
-rem * Usage             : start db_sesinu.sql
+rem * Description       : Monitor database session info
+rem * Usage             : start db_sesinf.sql
 rem ********************************************************************
 
-set lines 132
+set lines 255
 set pages 60
+
+column userid      format a11
+column os          format a40
+column pid         format a08
+column process     format a15
+column oracle_id   format a09
+column typ         format a03
+column program     format a20
+column command     format a07
+column pga         format a04
+column uga         format a04
 
 SELECT                                                                          
        SUBSTR                                                                   
@@ -20,7 +31,7 @@ SELECT
                      , S.USERNAME                                               
                      )                                                          
               )                                                                 
-       ,1,11 ) ORACLE                                                           
+       ,1,11 ) USERID                                                          
      , SUBSTR                                                                   
        (DECODE                                                                  
         (S.MACHINE                                                              
@@ -47,32 +58,17 @@ SELECT
                     )                                                           
          ,S.OSUSER                                                              
          )                                                                      
-       ,1,35)                                                                   
+       ,1,40)                                                                   
        OS                                                                       
      , SUBSTR(P.SPID,1,8) PID                                                   
+     , S.PROCESS
      , SUBSTR                                                                   
-       (S.SID||','||S.SERIAL#||                                     
+       (S.SID||':'||S.SERIAL#||                                     
         DECODE                                                                  
         (S.STATUS                                                               
         ,'KILLED','*'                                                           
         ,'')                                                                    
-       ,1,15) ORACLE_ID                                                          
-     , SUBSTR                                                                   
-       (DECODE                                                                  
-        (S.TYPE                                                                 
-        ,'BACKGROUND','BCK'                                                     
-        ,DECODE                                                                 
-         (DP.PADDR                                                              
-         ,NULL,DECODE                                                           
-               (SS.PADDR                                                        
-               ,NULL,'DED'                                                      
-               ,'SHR')                                                          
-         ,'DSP'                                                                 
-         )                                                                      
-        )                                                                       
-       ,1,3                                                                     
-       )                                                                        
-       TYP                                                                      
+       ,1,9) ORACLE_ID                                                          
      , UPPER                                                                    
        (SUBSTR                                                                  
         (decode                                                                 
@@ -210,10 +206,10 @@ SELECT
        ,1,7                                                                     
        )                                                                        
        COMMAND                                                                  
-     , substr(ltrim(to_char(round(pga.value/1024/1024,1),'9990D0')),1,4)         
-       pga                                                                      
-     , substr(ltrim(to_char(round(uga.value/1024/1024,1),'99990D0')),1,4)         
-       uga
+--     , substr(ltrim(to_char(round(pga.value/1024/1024,1),'9990D0')),1,4)         
+--       pga                                                                      
+--     , substr(ltrim(to_char(round(uga.value/1024/1024,1),'99990D0')),1,4)         
+--       uga
  FROM  SYS.V_$PROCESS       P                                                   
  ,     SYS.V_$SESSTAT       PGA                                                 
  ,     SYS.V_$SESSTAT       UGA                                                 
@@ -231,5 +227,6 @@ SELECT
  AND   CGA.STATISTIC#       = 12                                                
  AND   S.SID                = UGA.SID                                           
  AND   S.SID                = CGA.SID
- AND   S.SID                = PGA.SID                                           
- ORDER BY 1;
+ AND   S.SID                = PGA.SID
+ AND   S.TYPE               <> 'BACKGROUND' 
+ ORDER BY USERID;
