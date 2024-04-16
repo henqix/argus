@@ -24,7 +24,7 @@ select /*+ ORDERED */ to_char(s.sid)||':'||to_char(s.serial#) sid,
        substr(s.username,1,10) username,
        t.address adr, 
        t.sql_text,
-       a.rows_processed rpr,
+       a.rows_processed numrws,
        a.executions exc 
 from   v$session s, 
        v$sqltext t,
