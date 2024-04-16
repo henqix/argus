@@ -39,9 +39,10 @@ from
   sys.v_$sqltext  p
 where
   100 * s.direct_writes / t.total_disk_writes > 1 and
---  s.direct_writes > 50 * s.executions and
+  s.direct_writes > 50 * s.executions and
   p.address = s.address
 order by
   1, s.address, p.piece
 /
+
 

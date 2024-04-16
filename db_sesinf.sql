@@ -5,6 +5,7 @@ rem * Original          : 12-apr-97
 rem * Last Update       : 12-sep-02
 rem * Update            : Use view DBA_USERS instaed of USER$
 rem * Description       : Monitor database session info
+rem * Usage             : start db_sesinf.sql
 rem ********************************************************************
 
 set lines 255

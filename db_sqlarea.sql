@@ -13,11 +13,11 @@ set wrap on
 
 column sql format a60
 
-break on orauser on osuser on sid skip 1
+break on osuser on orauser on sid skip 1
 
-select substr(username,1,8) "OraUser", 
-       substr(osuser,1,8) "OsUser", 
-       substr(to_char(s.sid),1,2) "SID", 
+select substr(username,1,10) "OraUser", 
+       substr(osuser,1,10) "OsUser", 
+       substr(to_char(s.sid),1,3) "SID", 
        t.sql_text "SQL"
 from   v$session s, 
        v$sqlarea t

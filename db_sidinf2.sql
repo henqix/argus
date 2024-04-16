@@ -1,5 +1,5 @@
 rem ********************************************************************
-rem * Filename          : act_sidinf.sql - Version 1.0
+rem * Filename          : db_sidinf.sql - Version 1.0
 rem * Author            : Henk Uiterwijk
 rem * Original          : 20-mei-96
 rem * Last Update       : 
@@ -44,7 +44,7 @@ from
 ,       v$sess_io c
 where   a.paddr = b.addr
 and     a.sid = c.sid
-and     a.sid = 661
+and     a.sid = 1055
 /
 
 
@@ -66,7 +66,7 @@ from   v$session s,
        v$sqlarea a
 where t.address = s.sql_address
 and   t.address = a.address
-and   s.sid = 661
+and   s.sid = 1055
 /
 
 column obj format a20 heading "Object"
@@ -83,7 +83,7 @@ select type,
        v$lock.ctime "Time/sec"
 from   v$lock,
        sys.obj$
-where  sid = 661
+where  sid = 1055
 and    id1 = obj#
 /
 
@@ -94,7 +94,7 @@ select substr(event,1,30) ev,
        time_waited / 100 ti,
        average_wait / 100 av
 from   v$session_event
-where  sid = 661
+where  sid = 1055
 and    event not like 'SQL%'
 and    event not in ('rdbms ipc message','pmon timer','smon timer')
 and    total_timeouts <> 0

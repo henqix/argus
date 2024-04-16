@@ -32,3 +32,5 @@ and   t.address = a.address
 and   s.sid = 71
 order by s.sid, piece
 /
+
+spool off

@@ -7,7 +7,7 @@ rem * Description       : Show message status for Advanced Queueing
 rem * Usage             : start adv_queue.sql
 rem ********************************************************************
 
-set lines 132
+set lined 132
 set pages 60
 
 column owner format a30
@@ -17,6 +17,5 @@ select v.QID, d.OWNER, d.NAME, v.WAITING, v.READY, v.EXPIRED
 from v$aq v,
      dba_queues d
 where d.qid = v.qid
-order by 2,3
 /
 
