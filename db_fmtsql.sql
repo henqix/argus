@@ -1,4 +1,14 @@
+rem ********************************************************************
+rem * Filename          : db_fmtsql.sql - Version 1.0
+rem * Author            : Henk Uiterwijk
+rem * Original          : 17-oct-07
+rem * Update            : 
+rem * Description       : Format SQL statement for better reading
+rem ********************************************************************
+
+set pages 60
 set lines 255
+
 set feedback off
 set verify off
 set serveroutput on size 1000000 format wrapped
