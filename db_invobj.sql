@@ -11,8 +11,12 @@ rem ********************************************************************
 set lines 132
 set pages 60
 
-select object_type, status, count(*)
+column owner format a30
+column object_type format a30 
+
+select owner, object_type, status, count(*)
 from dba_objects
 where status <> 'VALID'
-group by object_type, status
+group by owner, object_type, status
+order by 1,2
 /
