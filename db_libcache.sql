@@ -7,12 +7,12 @@ rem * Update            :
 rem * Description       : Report library cache tenants
 rem ********************************************************************
 
-def aps_prog    = 'rd_libcac.sql'
-def aps_title   = 'Report Library Cache Information'
-start rh_ttlp
+set pages 60
+set lines 132
 
 compute sum of parsed_size on report
 compute sum of code_size on report
+
 break on report
 
 select substr(a.owner,1,15) "Owner",
