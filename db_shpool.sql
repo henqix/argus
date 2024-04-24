@@ -1,31 +1,43 @@
 rem ********************************************************************
-rem * Filename          : db_shpool.sql - Version 1.1
-rem * Author            : Henk Uiterwijk
-rem * Original          : 19-DEC-12
-rem * Last Update       : 
-rem * Update            : 
-rem * Description       : Monitor Database Shared Pools
+rem * Filename          : db_shpool.sql - Version 1.0
+rem * Author              Henk Uiterwijk
+rem * Original          : 20-NOV-91
+rem * Last Update       : 24/11/00  (HU)
+rem * Update            : Type CURSOR added
+rem * Description       : Report shared pool caching
 rem ********************************************************************
 
-set pages 60
 set lines 132
+set pages 60
 
-select   s.buffer_pool,
-         substr(o.object_name,1,30) object_name,
-         s.blocks total_blocks,
-         count(*) cached_blocks,
-         avg(v.tch) touched
-from     dba_objects o,
-         dba_segments s,
-         x$bh v
-where    o.data_object_id = v.obj
-and      o.owner = s.owner (+)
-and      o.object_name = s.segment_name (+)
-and      o.object_type = s.segment_type (+)
-and      s.buffer_pool in ('KEEP','RECYCLED')
-group by s.BUFFER_POOL, 
-         o.object_name,
-         s.blocks
-order by o.object_name
+col loads  format 99999
+col pins   format 99999
+col locks  format 99999
+col memory format 999,999,999
+col sharable_mem format 999,999,999
+
+compute sum of sharable_mem on report
+compute sum of memory on report
+break on report
+
+select type "Type",
+       count(*) "Count",
+       sum(sharable_mem) "Memory"
+from v$db_object_cache
+group by type
+order by sum(sharable_mem) desc
 /
 
+select substr(owner,1,10) "Owner", 
+       substr(name,1,10)||' - '||substr(type,1,15) "Name", 
+       loads,
+       pins,
+       locks, 
+       sharable_mem
+from v$db_object_cache
+where loads > 5
+and type in ('PACKAGE','PACKAGE BODY','FUNCTION','PROCEDURE','TRIGGER')
+order by 1,2
+/
+
+start rf_clea
