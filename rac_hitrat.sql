@@ -5,7 +5,6 @@ rem * Original          : 19-nov-07
 rem * Last Update       : 
 rem * Update            : 
 rem * Description       : Monitor database system hitrate (RAC)
-rem * Usage             : start rac_hitrat.sql
 rem ********************************************************************
 
 set pages 60
@@ -107,5 +106,3 @@ and  c.inst_id = 2
 and  d.inst_id = 2
 order by 1,2 asc
 /
-
-
