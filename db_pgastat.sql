@@ -10,6 +10,8 @@ rem ********************************************************************
 set lines 132
 set pages 66
 
+column name format a50
+
 select * from v$pgastat
 where name in
 ('aggregate PGA target parameter',
